@@ -17,6 +17,8 @@
             --text-color: #e8eaed;
             --border-color: #2d343a;
             --accent-color: #8ab4f8;
+            --terminal-bg: #000000;
+            --terminal-text: #00ff00;
         }
         
         * {
@@ -95,17 +97,10 @@
             background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
         }
         
-        .stat-card.danger {
-            border-left-color: var(--danger-color);
-        }
-        
-        .stat-card.warning {
-            border-left-color: var(--warning-color);
-        }
-        
-        .stat-card.success {
-            border-left-color: var(--secondary-color);
-        }
+        .stat-card.danger { border-left-color: var(--danger-color); }
+        .stat-card.warning { border-left-color: var(--warning-color); }
+        .stat-card.success { border-left-color: var(--secondary-color); }
+        .stat-card.ad-block-card { border-left-color: #8e24aa; }
         
         .stat-title {
             font-size: 1.1rem;
@@ -115,16 +110,14 @@
             color: var(--accent-color);
         }
         
-        .stat-title i {
-            margin-right: 10px;
-            font-size: 1.3rem;
-        }
+        .stat-title i { margin-right: 10px; font-size: 1.3rem; }
         
         .stat-value {
             font-size: 2.5rem;
             font-weight: bold;
             margin-bottom: 10px;
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+            transition: color 0.3s ease;
         }
         
         .stat-progress {
@@ -138,7 +131,7 @@
         .stat-progress-bar {
             height: 100%;
             border-radius: 3px;
-            transition: width 1s ease;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .stat-description {
@@ -147,6 +140,13 @@
             line-height: 1.5;
         }
         
+        .ad-block-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
         .main-content {
             display: grid;
             grid-template-columns: 2fr 1fr;
@@ -166,11 +166,10 @@
             padding: 20px;
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
             transition: transform 0.3s ease;
+            position: relative;
         }
         
-        .chart-card:hover {
-            transform: translateY(-5px);
-        }
+        .chart-card:hover { transform: translateY(-5px); }
         
         .chart-title {
             font-size: 1.2rem;
@@ -178,416 +177,145 @@
             display: flex;
             align-items: center;
             color: var(--accent-color);
-        }
-        
-        .chart-title i {
-            margin-right: 10px;
+            justify-content: space-between;
         }
         
         .chart-wrapper {
             height: 250px;
             position: relative;
         }
-        
-        .details-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-        
-        .details-card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease;
-        }
-        
-        .details-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .details-title {
-            font-size: 1.2rem;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            color: var(--accent-color);
-        }
-        
-        .details-title i {
-            margin-right: 10px;
-        }
-        
-        .details-list {
-            list-style-type: none;
-        }
-        
-        .details-list li {
-            padding: 12px 0;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: background 0.2s ease;
-        }
-        
-        .details-list li:hover {
-            background: rgba(255, 255, 255, 0.05);
-        }
-        
-        .details-list li:last-child {
-            border-bottom: none;
-        }
-        
-        .status-badge {
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-        
-        .status-safe {
-            background-color: rgba(52, 168, 83, 0.2);
-            color: var(--secondary-color);
-            border: 1px solid rgba(52, 168, 83, 0.5);
-        }
-        
-        .status-warning {
-            background-color: rgba(251, 188, 5, 0.2);
-            color: var(--warning-color);
-            border: 1px solid rgba(251, 188, 5, 0.5);
-        }
-        
-        .status-danger {
-            background-color: rgba(234, 67, 53, 0.2);
-            color: var(--danger-color);
-            border: 1px solid rgba(234, 67, 53, 0.5);
-        }
-        
-        .footer {
-            text-align: center;
-            margin-top: 40px;
-            padding: 20px;
-            color: #9aa0a6;
-            font-size: 0.9rem;
-            border-top: 1px solid var(--border-color);
-        }
-        
-        .real-time-indicator {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            background-color: var(--secondary-color);
-            border-radius: 50%;
-            margin-right: 8px;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { 
-                opacity: 1; 
-                box-shadow: 0 0 0 0 rgba(52, 168, 83, 0.7);
-            }
-            70% { 
-                opacity: 0.7;
-                box-shadow: 0 0 0 10px rgba(52, 168, 83, 0);
-            }
-            100% { 
-                opacity: 1;
-                box-shadow: 0 0 0 0 rgba(52, 168, 83, 0);
-            }
-        }
-        
-        .node-status {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        
-        .node-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
-        
-        .node-active {
-            background-color: var(--secondary-color);
-            box-shadow: 0 0 5px var(--secondary-color);
-        }
-        
-        .node-inactive {
-            background-color: #5f6368;
-        }
-        
-        .risk-meter {
-            height: 10px;
-            background: linear-gradient(90deg, var(--secondary-color), var(--warning-color), var(--danger-color));
-            border-radius: 5px;
-            margin: 10px 0;
-            position: relative;
-        }
-        
-        .risk-indicator {
-            position: absolute;
-            top: -5px;
-            width: 20px;
-            height: 20px;
-            background: white;
-            border-radius: 50%;
-            transform: translateX(-50%);
-            box-shadow: 0 0 5px rgba(0,0,0,0.5);
-        }
-        
-        .data-flow {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 20px 0;
-            padding: 10px;
-            background: rgba(255,255,255,0.05);
+
+        /* 实时日志样式 */
+        .live-log-container {
+            background: var(--terminal-bg);
             border-radius: 8px;
-        }
-        
-        .flow-step {
-            text-align: center;
-            flex: 1;
-            position: relative;
-        }
-        
-        .flow-step:not(:last-child)::after {
-            content: '→';
-            position: absolute;
-            right: -15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--accent-color);
-        }
-        
-        .flow-icon {
-            font-size: 1.5rem;
-            margin-bottom: 5px;
-            color: var(--accent-color);
-        }
-        
-        .security-shield {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            background: rgba(26, 115, 232, 0.2);
-            border-radius: 50%;
-            margin-right: 10px;
-        }
-        
-        .threat-level {
+            padding: 15px;
+            height: 250px;
+            overflow-y: hidden; /* 自动滚动，隐藏滚动条 */
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.85rem;
+            color: var(--terminal-text);
+            border: 1px solid #333;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
             display: flex;
-            align-items: center;
-            margin-top: 10px;
+            flex-direction: column-reverse; /* 新日志在底部 */
         }
-        
-        .threat-bar {
-            flex: 1;
-            height: 8px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 4px;
-            margin: 0 10px;
-            overflow: hidden;
-        }
-        
-        .threat-fill {
-            height: 100%;
-            border-radius: 4px;
-            transition: width 1s ease;
-        }
-        
-        .performance-metrics {
+
+        .log-entry {
+            margin-bottom: 6px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid rgba(0, 255, 0, 0.2);
+            animation: fadeIn 0.3s ease-in-out;
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-top: 15px;
-        }
-        
-        .metric {
-            text-align: center;
-            padding: 10px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 8px;
-        }
-        
-        .metric-value {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin: 5px 0;
-        }
-        
-        .metric-label {
-            font-size: 0.8rem;
-            color: #9aa0a6;
-        }
-        
-        .comparison-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-        
-        .comparison-table th, .comparison-table td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-        }
-        
-        .comparison-table th {
-            color: var(--accent-color);
-            font-weight: normal;
-        }
-        
-        .comparison-table tr:hover {
-            background: rgba(255,255,255,0.05);
-        }
-        
-        .comparison-badge {
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-        }
-        
-        .badge-better {
-            background: rgba(52, 168, 83, 0.2);
-            color: var(--secondary-color);
-        }
-        
-        .badge-worse {
-            background: rgba(234, 67, 53, 0.2);
-            color: var(--danger-color);
-        }
-        
-        .dns-latency-monitor {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-            margin-bottom: 20px;
-        }
-        
-        .dns-latency-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        .dns-latency-title {
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            color: var(--accent-color);
-        }
-        
-        .dns-latency-title i {
-            margin-right: 10px;
-        }
-        
-        .dns-latency-controls {
-            display: flex;
+            grid-template-columns: 80px 120px 1fr 80px;
             gap: 10px;
+            align-items: center;
         }
+
+        .log-entry span { opacity: 0.9; }
+        .log-time { color: #888; }
+        .log-ip { color: #ffeb3b; }
+        .log-target { color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .log-action { font-weight: bold; }
+        .log-action.allow { color: var(--secondary-color); }
+        .log-action.block { color: var(--danger-color); }
+        .log-action.proxy { color: var(--accent-color); }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 布局通用类 */
+        .details-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .details-card { background: var(--card-bg); border-radius: 12px; padding: 20px; box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3); transition: transform 0.3s ease; }
+        .details-card:hover { transform: translateY(-5px); }
+        .details-title { font-size: 1.2rem; margin-bottom: 15px; display: flex; align-items: center; color: var(--accent-color); }
+        .details-list { list-style-type: none; }
+        .details-list li { padding: 12px 0; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; transition: background 0.2s ease; }
+        .details-list li:hover { background: rgba(255, 255, 255, 0.05); }
+        .details-list li:last-child { border-bottom: none; }
         
-        .control-btn {
-            background: rgba(255,255,255,0.1);
-            border: none;
-            color: var(--text-color);
-            padding: 5px 10px;
+        .status-badge { padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
+        .status-safe { background-color: rgba(52, 168, 83, 0.2); color: var(--secondary-color); border: 1px solid rgba(52, 168, 83, 0.5); }
+        .status-warning { background-color: rgba(251, 188, 5, 0.2); color: var(--warning-color); border: 1px solid rgba(251, 188, 5, 0.5); }
+        .status-danger { background-color: rgba(234, 67, 53, 0.2); color: var(--danger-color); border: 1px solid rgba(234, 67, 53, 0.5); }
+        
+        .footer { text-align: center; margin-top: 40px; padding: 20px; color: #9aa0a6; font-size: 0.9rem; border-top: 1px solid var(--border-color); }
+        
+        .real-time-indicator { display: inline-block; width: 12px; height: 12px; background-color: var(--secondary-color); border-radius: 50%; margin-right: 8px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; box-shadow: 0 0 0 0 rgba(52, 168, 83, 0.7); } 70% { opacity: 0.7; box-shadow: 0 0 0 10px rgba(52, 168, 83, 0); } 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(52, 168, 83, 0); } }
+        
+        .node-status { display: flex; align-items: center; margin-bottom: 10px; }
+        .node-dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 10px; }
+        .node-active { background-color: var(--secondary-color); box-shadow: 0 0 5px var(--secondary-color); }
+        
+        .data-flow { display: flex; justify-content: space-between; align-items: center; margin: 20px 0; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 8px; }
+        .flow-step { text-align: center; flex: 1; position: relative; }
+        .flow-step:not(:last-child)::after { content: '→'; position: absolute; right: -15px; top: 50%; transform: translateY(-50%); color: var(--accent-color); }
+        .flow-icon { font-size: 1.5rem; margin-bottom: 5px; color: var(--accent-color); transition: color 0.3s; }
+        
+        /* 流量激活闪烁动画 */
+        .flow-step.active .flow-icon { color: var(--secondary-color); text-shadow: 0 0 10px var(--secondary-color); transform: scale(1.1); }
+        
+        .threat-level { display: flex; align-items: center; margin-top: 10px; }
+        .threat-bar { flex: 1; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; margin: 0 10px; overflow: hidden; }
+        .threat-fill { height: 100%; border-radius: 4px; transition: width 1s ease; }
+        
+        .performance-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px; }
+        .metric { text-align: center; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 8px; }
+        .metric-value { font-size: 1.5rem; font-weight: bold; margin: 5px 0; }
+        .metric-label { font-size: 0.8rem; color: #9aa0a6; }
+        
+        .comparison-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .comparison-table th, .comparison-table td { padding: 10px; text-align: left; border-bottom: 1px solid var(--border-color); }
+        .comparison-table th { color: var(--accent-color); font-weight: normal; }
+        .comparison-table tr:hover { background: rgba(255,255,255,0.05); }
+        .comparison-badge { padding: 3px 8px; border-radius: 4px; font-size: 0.8rem; }
+        .badge-better { background: rgba(52, 168, 83, 0.2); color: var(--secondary-color); }
+        
+        /* DNS监控部分样式保留 */
+        .dns-latency-monitor { background: var(--card-bg); border-radius: 12px; padding: 20px; box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3); margin-bottom: 20px; }
+        .dns-latency-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .dns-latency-title { font-size: 1.2rem; display: flex; align-items: center; color: var(--accent-color); }
+        .dns-latency-title i { margin-right: 10px; }
+        .dns-latency-controls { display: flex; gap: 10px; }
+        .control-btn { background: rgba(255,255,255,0.1); border: none; color: var(--text-color); padding: 5px 10px; border-radius: 4px; cursor: pointer; transition: background 0.2s; }
+        .control-btn:hover { background: rgba(255,255,255,0.2); }
+        .dns-latency-content { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+        .latency-chart-container { height: 300px; }
+        .latency-stats { display: flex; flex-direction: column; gap: 15px; }
+        .latency-stat { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 8px; }
+        .latency-server { display: flex; align-items: center; }
+        .latency-dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 10px; }
+        .latency-value { font-weight: bold; font-size: 1.1rem; }
+        .latency-trend { font-size: 0.8rem; margin-left: 5px; }
+        .trend-up { color: var(--danger-color); }
+        .trend-down { color: var(--secondary-color); }
+        .latency-history { margin-top: 15px; max-height: 150px; overflow-y: auto; }
+        .history-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border-color); font-size: 0.9rem; }
+
+        /* 新增：访客统计微型徽章 */
+        .live-badge {
+            background-color: var(--danger-color);
+            color: white;
+            padding: 2px 6px;
             border-radius: 4px;
-            cursor: pointer;
-            transition: background 0.2s;
+            font-size: 0.7rem;
+            margin-left: 10px;
+            animation: pulse-red 1s infinite;
         }
-        
-        .control-btn:hover {
-            background: rgba(255,255,255,0.2);
-        }
-        
-        .dns-latency-content {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 20px;
-        }
-        
-        .latency-chart-container {
-            height: 300px;
-        }
-        
-        .latency-stats {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .latency-stat {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 8px;
-        }
-        
-        .latency-server {
-            display: flex;
-            align-items: center;
-        }
-        
-        .latency-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
-        
-        .latency-value {
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
-        
-        .latency-trend {
-            font-size: 0.8rem;
-            margin-left: 5px;
-        }
-        
-        .trend-up {
-            color: var(--danger-color);
-        }
-        
-        .trend-down {
-            color: var(--secondary-color);
-        }
-        
-        .latency-history {
-            margin-top: 15px;
-            max-height: 150px;
-            overflow-y: auto;
-        }
-        
-        .history-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 0.9rem;
-        }
-        
-        .history-item:last-child {
-            border-bottom: none;
+        @keyframes pulse-red {
+            0% { opacity: 1; }
+            50% { opacity: 0.6; }
+            100% { opacity: 1; }
         }
     </style>
 </head>
 <body>
     <div class="dashboard-header">
         <h1 class="dashboard-title">Sing-Box 核心防御矩阵</h1>
-        <p class="dashboard-subtitle">智能风险动态监测可视化数据大屏 | 全面防护IP泄露、DNS污染、防火墙拦截、隐私安全威胁</p>
+        <p class="dashboard-subtitle">智能风险动态监测可视化数据大屏 | 实时追踪访客流量与安全威胁</p>
     </div>
     
     <div class="stats-container">
@@ -597,45 +325,34 @@
             <div class="stat-progress">
                 <div class="stat-progress-bar" style="width: 96.8%; background: var(--secondary-color);"></div>
             </div>
-            <p class="stat-description">基于IP安全、DNS防护、规则集完整性和连接稳定性综合评估</p>
+            <p class="stat-description">实时防护中</p>
         </div>
         
         <div class="stat-card">
-            <h3 class="stat-title"><i class="fas fa-network-wired"></i> IP安全状态</h3>
-            <div class="stat-value">98.7%</div>
+            <h3 class="stat-title"><i class="fas fa-users"></i> 实时活跃访客 <span class="live-badge">LIVE</span></h3>
+            <div class="stat-value" id="active-visitors">0</div>
             <div class="stat-progress">
-                <div class="stat-progress-bar" style="width: 98.7%; background: var(--secondary-color);"></div>
+                <div class="stat-progress-bar" id="visitor-bar" style="width: 10%; background: var(--accent-color);"></div>
             </div>
-            <p class="stat-description">TUN设备加密、伪装技术有效防止IP泄露、扫描和防火墙拦截</p>
+            <p class="stat-description">当前并发连接数与监控对象</p>
         </div>
         
         <div class="stat-card">
-            <h3 class="stat-title"><i class="fas fa-server"></i> DNS安全状态</h3>
-            <div class="stat-value">99.2%</div>
+            <h3 class="stat-title"><i class="fas fa-exchange-alt"></i> 总处理请求</h3>
+            <div class="stat-value" id="total-requests">45,892</div>
             <div class="stat-progress">
-                <div class="stat-progress-bar" style="width: 99.2%; background: var(--secondary-color);"></div>
+                <div class="stat-progress-bar" style="width: 85%; background: var(--secondary-color);"></div>
             </div>
-            <p class="stat-description">HTTPS加密查询、独立缓存和fakeip策略防止DNS泄露和污染</p>
+            <p class="stat-description">今日累计处理流量请求</p>
         </div>
         
-        <div class="stat-card">
-            <h3 class="stat-title"><i class="fas fa-random"></i> 分流效率</h3>
-            <div class="stat-value">94.5%</div>
-            <div class="stat-progress">
-                <div class="stat-progress-bar" style="width: 94.5%; background: var(--secondary-color);"></div>
-            </div>
-            <p class="stat-description">基于16个规则集的智能分流，准确识别国内外流量</p>
-        </div>
-    </div>
-    
-    <!-- 新增广告拦截统计卡片 -->
+        <!-- 广告拦截统计卡片 -->
         <div class="stat-card ad-block-card">
-            <h3 class="stat-title"><i class="fas fa-ban"></i> 广告拦截统计</h3>
-            <div class="stat-value">92.3%</div>
+            <h3 class="stat-title"><i class="fas fa-ban"></i> 实时广告拦截</h3>
+            <div class="stat-value" id="ad-block-percentage">92.3%</div>
             <div class="stat-progress">
-                <div class="stat-progress-bar" style="width: 92.3%; background: #8e24aa;"></div>
+                <div class="stat-progress-bar" id="ad-bar" style="width: 92.3%; background: #8e24aa;"></div>
             </div>
-            <p class="stat-description">已拦截广告请求、追踪脚本和恶意弹窗，提升浏览体验</p>
             <div class="ad-block-metrics">
                 <div class="metric">
                     <div class="metric-value" id="blocked-count">1,286</div>
@@ -647,10 +364,9 @@
                 </div>
             </div>
        </div>
-            </div>
+    </div>
     
-    
-    <!-- DNS解析延迟监控 -->
+    <!-- DNS解析延迟监控 (保持原样) -->
     <div class="dns-latency-monitor">
         <div class="dns-latency-header">
             <h3 class="dns-latency-title"><i class="fas fa-tachometer-alt"></i> DNS解析延迟实时监控</h3>
@@ -707,23 +423,23 @@
                         <span>FakeIP: 查询 netflix.com</span>
                         <span>12ms</span>
                     </div>
-                    <div class="history-item">
-                        <span>Google DNS: 查询 google.com</span>
-                        <span>62ms</span>
-                    </div>
-                    <div class="history-item">
-                        <span>Ali DNS: 查询 taobao.com</span>
-                        <span>28ms</span>
-                    </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- 新增：实时访客日志追踪区域 -->
+    <div class="stat-card" style="margin-bottom: 20px; border-left-color: #00e676;">
+        <h3 class="chart-title"><i class="fas fa-terminal"></i> 实时访问请求日志 (Live Traffic) <span style="font-size: 0.8rem; color: #888;">实时监控所有访客流量</span></h3>
+        <div class="live-log-container" id="visitor-logs">
+            <!-- JS将动态插入日志 -->
         </div>
     </div>
     
     <div class="main-content">
         <div class="chart-container">
             <div class="chart-card">
-                <h3 class="chart-title"><i class="fas fa-bolt"></i> 节点性能评分</h3>
+                <h3 class="chart-title"><i class="fas fa-bolt"></i> 节点性能实时监测</h3>
                 <div class="chart-wrapper">
                     <canvas id="nodePerformanceChart"></canvas>
                 </div>
@@ -744,40 +460,43 @@
             </div>
             
             <div class="chart-card">
-                <h3 class="chart-title"><i class="fas fa-shield-virus"></i> 安全威胁分布</h3>
+                <h3 class="chart-title">
+                    <span><i class="fas fa-shield-virus"></i> 实时威胁拦截分布</span>
+                    <span id="threat-counter" style="font-size:0.9rem; color:var(--danger-color)">0 拦截/分</span>
+                </h3>
                 <div class="chart-wrapper">
                     <canvas id="threatDistributionChart"></canvas>
                 </div>
                 <div class="threat-level">
-                    <span>低风险</span>
+                    <span>安全</span>
                     <div class="threat-bar">
-                        <div class="threat-fill" style="width: 15%; background: var(--secondary-color);"></div>
+                        <div class="threat-fill" id="risk-bar" style="width: 15%; background: var(--secondary-color);"></div>
                     </div>
-                    <span>高风险</span>
+                    <span>高危</span>
                 </div>
             </div>
             
             <div class="chart-card">
-                <h3 class="chart-title"><i class="fas fa-project-diagram"></i> 流量分布分析</h3>
+                <h3 class="chart-title"><i class="fas fa-project-diagram"></i> 实时流量流向分析</h3>
                 <div class="chart-wrapper">
                     <canvas id="trafficDistributionChart"></canvas>
                 </div>
                 <div class="data-flow">
-                    <div class="flow-step">
+                    <div class="flow-step" id="flow-user">
                         <div class="flow-icon"><i class="fas fa-user"></i></div>
-                        <div>用户请求</div>
+                        <div>访客</div>
                     </div>
-                    <div class="flow-step">
+                    <div class="flow-step" id="flow-rule">
                         <div class="flow-icon"><i class="fas fa-filter"></i></div>
-                        <div>规则匹配</div>
+                        <div>规则</div>
                     </div>
-                    <div class="flow-step">
+                    <div class="flow-step" id="flow-route">
                         <div class="flow-icon"><i class="fas fa-route"></i></div>
-                        <div>智能分流</div>
+                        <div>分流</div>
                     </div>
-                    <div class="flow-step">
+                    <div class="flow-step" id="flow-server">
                         <div class="flow-icon"><i class="fas fa-server"></i></div>
-                        <div>目标服务器</div>
+                        <div>目标</div>
                     </div>
                 </div>
             </div>
@@ -786,13 +505,6 @@
                 <h3 class="chart-title"><i class="fas fa-chart-line"></i> 延迟趋势分析</h3>
                 <div class="chart-wrapper">
                     <canvas id="latencyTrendChart"></canvas>
-                </div>
-                <div class="threat-level">
-                    <span>5分钟前</span>
-                    <div class="threat-bar">
-                        <div class="threat-fill" style="width: 100%; background: var(--primary-color);"></div>
-                    </div>
-                    <span>现在</span>
                 </div>
             </div>
         </div>
@@ -817,10 +529,6 @@
                     <span>1分钟</span>
                 </li>
                 <li>
-                    <span>容错阈值</span>
-                    <span>50ms</span>
-                </li>
-                <li>
                     <span>当前策略</span>
                     <span class="status-badge status-safe">负载均衡</span>
                 </li>
@@ -830,15 +538,11 @@
             <div class="details-list">
                 <li>
                     <span>最后更新</span>
-                    <span>2小时前</span>
+                    <span>刚刚</span>
                 </li>
                 <li>
                     <span>规则数量</span>
                     <span>16个</span>
-                </li>
-                <li>
-                    <span>更新方式</span>
-                    <span class="status-badge status-safe">自动</span>
                 </li>
             </div>
         </div>
@@ -857,24 +561,8 @@
                     <span class="status-badge status-safe">已防护</span>
                 </li>
                 <li>
-                    <span>IP被防火墙拦截</span>
-                    <span class="status-badge status-safe">已规避</span>
-                </li>
-                <li>
-                    <span>IP万人骑检测</span>
-                    <span class="status-badge status-warning">中等</span>
-                </li>
-                <li>
-                    <span>IP污染检测</span>
-                    <span class="status-badge status-safe">已防护</span>
-                </li>
-                <li>
                     <span>IP隐私安全</span>
                     <span class="status-badge status-safe">高</span>
-                </li>
-                <li>
-                    <span>IP地址乱跳</span>
-                    <span class="status-badge status-safe">已优化</span>
                 </li>
             </ul>
         </div>
@@ -891,83 +579,15 @@
                     <span class="status-badge status-safe">16个规则集</span>
                 </li>
                 <li>
-                    <span>出站连接</span>
-                    <span class="status-badge status-safe">2个节点</span>
-                </li>
-                <li>
                     <span>TUN设备</span>
-                    <span class="status-badge status-safe">已启用</span>
-                </li>
-                <li>
-                    <span>HTTP代理</span>
-                    <span class="status-badge status-safe">127.0.0.1:7890</span>
-                </li>
-                <li>
-                    <span>Clash API</span>
-                    <span class="status-badge status-safe">127.0.0.1:9090</span>
-                </li>
-                <li>
-                    <span>缓存系统</span>
                     <span class="status-badge status-safe">已启用</span>
                 </li>
             </ul>
         </div>
     </div>
     
-    <div class="details-card" style="margin-top: 20px;">
-        <h3 class="details-title"><i class="fas fa-balance-scale"></i> Sing-Box 与标准代理对比</h3>
-        <table class="comparison-table">
-            <thead>
-                <tr>
-                    <th>功能特性</th>
-                    <th>Sing-Box</th>
-                    <th>标准代理</th>
-                    <th>优势</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>DNS安全</td>
-                    <td>HTTPS+独立缓存+FakeIP</td>
-                    <td>普通DNS</td>
-                    <td><span class="comparison-badge badge-better">+95%</span></td>
-                </tr>
-                <tr>
-                    <td>IP泄露防护</td>
-                    <td>TUN设备+流量加密</td>
-                    <td>基础防护</td>
-                    <td><span class="comparison-badge badge-better">+87%</span></td>
-                </tr>
-                <tr>
-                    <td>规则集分流</td>
-                    <td>16个远程规则集</td>
-                    <td>简单域名列表</td>
-                    <td><span class="comparison-badge badge-better">+73%</span></td>
-                </tr>
-                <tr>
-                    <td>性能优化</td>
-                    <td>URL测试+自动切换</td>
-                    <td>手动切换</td>
-                    <td><span class="comparison-badge badge-better">+68%</span></td>
-                </tr>
-                <tr>
-                    <td>抗干扰能力</td>
-                    <td>多协议+混淆</td>
-                    <td>单一协议</td>
-                    <td><span class="comparison-badge badge-better">+82%</span></td>
-                </tr>
-                <tr>
-                    <td>广告拦截</td>
-                    <td>智能规则拦截+实时更新</td>
-                    <td>无或基础拦截</td>
-                    <td><span class="comparison-badge badge-better">+92%</span></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    
     <div class="footer">
-        <p><span class="real-time-indicator"></span> 实时监控中 | 最后更新: <span id="current-time">加载中...</span> | Sing-Box版本: 1.8.0 | 配置文件版本: 3.0</p>
+        <p><span class="real-time-indicator"></span> 实时监控中 | 当前在线访客: <span id="footer-visitor-count" style="color:white;font-weight:bold;">0</span> | 最后更新: <span id="current-time">加载中...</span></p>
     </div>
 
     <script>
@@ -977,358 +597,297 @@
             document.getElementById('current-time').textContent = 
                 now.toLocaleDateString('zh-CN') + ' ' + now.toLocaleTimeString('zh-CN');
         }
-        
         updateTime();
         setInterval(updateTime, 1000);
+
+        // ==========================================
+        //  实时访客模拟与追踪系统 (核心新增功能)
+        // ==========================================
+        const visitorSystem = {
+            totalRequests: 45892,
+            blockedCount: 1286,
+            activeVisitors: 12,
+            savedDataMB: 48,
+            
+            // 模拟数据源
+            ips: ['192.168.1.10', '10.0.0.5', '172.16.0.23', '203.0.113.45', '198.51.100.12', 'Visitor-PC', 'Mobile-User'],
+            targets: [
+                { url: 'google.com', type: 'proxy' },
+                { url: 'baidu.com', type: 'direct' },
+                { url: 'ad.doubleclick.net', type: 'block' },
+                { url: 'youtube.com', type: 'proxy' },
+                { url: 'tracker.analytics.com', type: 'block' },
+                { url: 'github.com', type: 'proxy' },
+                { url: 'bilibili.com', type: 'direct' },
+                { url: 'malware-site.net', type: 'block' }
+            ],
+
+            init: function() {
+                // 启动实时日志生成器
+                setInterval(() => this.generateTraffic(), 800);
+                // 启动活跃访客数波动
+                setInterval(() => this.fluctuateVisitors(), 3000);
+            },
+
+            generateTraffic: function() {
+                // 随机生成一条访问记录
+                const randomIP = this.ips[Math.floor(Math.random() * this.ips.length)];
+                const targetObj = this.targets[Math.floor(Math.random() * this.targets.length)];
+                const now = new Date().toLocaleTimeString('zh-CN', { hour12: false });
+                
+                let actionText = '';
+                let actionClass = '';
+                
+                this.totalRequests++;
+
+                // 触发流向动画
+                this.animateFlow();
+
+                if (targetObj.type === 'block') {
+                    actionText = '已拦截';
+                    actionClass = 'block';
+                    this.blockedCount++;
+                    this.savedDataMB += 0.05;
+                    this.updateCharts('block');
+                } else if (targetObj.type === 'proxy') {
+                    actionText = '代理转发';
+                    actionClass = 'proxy';
+                    this.updateCharts('proxy');
+                } else {
+                    actionText = '直连';
+                    actionClass = 'allow';
+                    this.updateCharts('direct');
+                }
+
+                // 更新DOM数值
+                document.getElementById('total-requests').textContent = this.totalRequests.toLocaleString();
+                document.getElementById('blocked-count').textContent = this.blockedCount.toLocaleString();
+                document.getElementById('saved-data').textContent = Math.floor(this.savedDataMB) + 'MB';
+                
+                // 计算拦截率
+                const blockRate = ((this.blockedCount / this.totalRequests) * 100).toFixed(1);
+                document.getElementById('ad-block-percentage').textContent = blockRate + '%';
+                document.getElementById('ad-bar').style.width = blockRate + '%';
+
+                // 插入日志
+                const logContainer = document.getElementById('visitor-logs');
+                const logEntry = document.createElement('div');
+                logEntry.className = 'log-entry';
+                logEntry.innerHTML = `
+                    <span class="log-time">[${now}]</span>
+                    <span class="log-ip">${randomIP}</span>
+                    <span class="log-target">${targetObj.url}</span>
+                    <span class="log-action ${actionClass}">${actionText}</span>
+                `;
+                
+                logContainer.prepend(logEntry); // 最新在最上 (flex-direction: column-reverse handles display)
+                
+                // 保持日志数量，避免DOM过大
+                if (logContainer.children.length > 15) {
+                    logContainer.removeChild(logContainer.lastChild);
+                }
+            },
+
+            fluctuateVisitors: function() {
+                // 模拟活跃人数波动
+                const change = Math.floor(Math.random() * 5) - 2;
+                this.activeVisitors = Math.max(1, this.activeVisitors + change);
+                
+                document.getElementById('active-visitors').textContent = this.activeVisitors;
+                document.getElementById('footer-visitor-count').textContent = this.activeVisitors;
+                
+                // 更新进度条颜色和宽度
+                const bar = document.getElementById('visitor-bar');
+                const percentage = Math.min(100, this.activeVisitors * 2); 
+                bar.style.width = percentage + '%';
+                
+                if (this.activeVisitors > 20) {
+                    bar.style.backgroundColor = '#ea4335'; // 红色高负载
+                } else {
+                    bar.style.backgroundColor = '#8ab4f8'; // 正常
+                }
+            },
+
+            animateFlow: function() {
+                // 简单的流向闪烁动画
+                const steps = ['flow-user', 'flow-rule', 'flow-route', 'flow-server'];
+                steps.forEach((id, index) => {
+                    setTimeout(() => {
+                        const el = document.getElementById(id);
+                        el.classList.add('active');
+                        setTimeout(() => el.classList.remove('active'), 200);
+                    }, index * 150);
+                });
+            },
+
+            updateCharts: function(type) {
+                // 实时更新流量分布饼图
+                const trafficData = trafficDistributionChart.data.datasets[0].data;
+                const threatData = threatDistributionChart.data.datasets[0].data;
+                
+                if (type === 'proxy') trafficData[1]++;
+                if (type === 'direct') trafficData[0]++;
+                if (type === 'block') {
+                    trafficData[3]++;
+                    threatData[1]++; // 增加低风险拦截计数
+                    document.getElementById('threat-counter').textContent = (Math.floor(Math.random()*5)+1) + " 拦截/分";
+                }
+
+                trafficDistributionChart.update('none'); // 'none' mode for smooth animation
+                threatDistributionChart.update('none');
+            }
+        };
+
+        // ==========================================
+        //  图表初始化 (Chart.js)
+        // ==========================================
         
-        // DNS延迟图表数据
+        // 1. DNS延迟图表 (保持原代码逻辑)
         let dnsData = {
             labels: [],
             datasets: [
-                {
-                    label: 'Google DNS',
-                    data: [],
-                    borderColor: 'rgba(26, 115, 232, 1)',
-                    backgroundColor: 'rgba(26, 115, 232, 0.1)',
-                    tension: 0.4,
-                    fill: true
-                },
-                {
-                    label: 'Ali DNS',
-                    data: [],
-                    borderColor: 'rgba(52, 168, 83, 1)',
-                    backgroundColor: 'rgba(52, 168, 83, 0.1)',
-                    tension: 0.4,
-                    fill: true
-                },
-                {
-                    label: 'FakeIP',
-                    data: [],
-                    borderColor: 'rgba(251, 188, 5, 1)',
-                    backgroundColor: 'rgba(251, 188, 5, 0.1)',
-                    tension: 0.4,
-                    fill: true
-                }
+                { label: 'Google DNS', data: [], borderColor: 'rgba(26, 115, 232, 1)', backgroundColor: 'rgba(26, 115, 232, 0.1)', tension: 0.4, fill: true },
+                { label: 'Ali DNS', data: [], borderColor: 'rgba(52, 168, 83, 1)', backgroundColor: 'rgba(52, 168, 83, 0.1)', tension: 0.4, fill: true },
+                { label: 'FakeIP', data: [], borderColor: 'rgba(251, 188, 5, 1)', backgroundColor: 'rgba(251, 188, 5, 0.1)', tension: 0.4, fill: true }
             ]
         };
-        
-        // DNS延迟图表
         const dnsCtx = document.getElementById('dnsLatencyChart').getContext('2d');
         const dnsLatencyChart = new Chart(dnsCtx, {
             type: 'line',
             data: dnsData,
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            color: 'rgba(255, 255, 255, 0.1)'
-                        },
-                        ticks: {
-                            color: '#9aa0a6'
-                        },
-                        title: {
-                            display: true,
-                            text: '延迟 (ms)',
-                            color: '#9aa0a6'
-                        }
-                    },
-                    x: {
-                        grid: {
-                            color: 'rgba(255, 255, 255, 0.1)'
-                        },
-                        ticks: {
-                            color: '#9aa0a6'
-                        },
-                        title: {
-                            display: true,
-                            text: '时间',
-                            color: '#9aa0a6'
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        labels: {
-                            color: '#9aa0a6'
-                        }
-                    }
-                }
-            }
+            options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, grid: { color: 'rgba(255, 255, 255, 0.1)' }, ticks: { color: '#9aa0a6' } }, x: { grid: { color: 'rgba(255, 255, 255, 0.1)' }, ticks: { color: '#9aa0a6' } } }, plugins: { legend: { labels: { color: '#9aa0a6' } } } }
         });
-        
-        // 延迟趋势图表
-        const trendCtx = document.getElementById('latencyTrendChart').getContext('2d');
-        const latencyTrendChart = new Chart(trendCtx, {
-            type: 'line',
-            data: {
-                labels: ['-5m', '-4m', '-3m', '-2m', '-1m', '当前'],
-                datasets: [
-                    {
-                        label: '平均延迟',
-                        data: [45, 38, 42, 35, 32, 28],
-                        borderColor: 'rgba(138, 180, 248, 1)',
-                        backgroundColor: 'rgba(138, 180, 248, 0.1)',
-                        tension: 0.4,
-                        fill: true
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            color: 'rgba(255, 255, 255, 0.1)'
-                        },
-                        ticks: {
-                            color: '#9aa0a6'
-                        }
-                    },
-                    x: {
-                        grid: {
-                            display: false
-                        },
-                        ticks: {
-                            color: '#9aa0a6'
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                }
-            }
-        });
-        
-        // 节点性能图表
+
+        // 2. 节点性能雷达图 (动态更新)
         const nodeCtx = document.getElementById('nodePerformanceChart').getContext('2d');
         const nodePerformanceChart = new Chart(nodeCtx, {
             type: 'radar',
             data: {
                 labels: ['速度', '稳定性', '延迟', '带宽', '可用性'],
                 datasets: [
-                    {
-                        label: '节点1-us1',
-                        data: [85, 90, 80, 75, 95],
-                        backgroundColor: 'rgba(26, 115, 232, 0.2)',
-                        borderColor: 'rgba(26, 115, 232, 1)',
-                        pointBackgroundColor: 'rgba(26, 115, 232, 1)'
-                    },
-                    {
-                        label: '节点2-us2',
-                        data: [75, 85, 90, 80, 90],
-                        backgroundColor: 'rgba(52, 168, 83, 0.2)',
-                        borderColor: 'rgba(52, 168, 83, 1)',
-                        pointBackgroundColor: 'rgba(52, 168, 83, 1)'
-                    }
+                    { label: '节点1-us1', data: [85, 90, 80, 75, 95], backgroundColor: 'rgba(26, 115, 232, 0.2)', borderColor: 'rgba(26, 115, 232, 1)' },
+                    { label: '节点2-us2', data: [75, 85, 90, 80, 90], backgroundColor: 'rgba(52, 168, 83, 0.2)', borderColor: 'rgba(52, 168, 83, 1)' }
                 ]
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    r: {
-                        angleLines: {
-                            color: 'rgba(255, 255, 255, 0.1)'
-                        },
-                        grid: {
-                            color: 'rgba(255, 255, 255, 0.1)'
-                        },
-                        pointLabels: {
-                            color: '#9aa0a6'
-                        },
-                        ticks: {
-                            display: false
-                        }
-                    }
-                }
-            }
+            options: { responsive: true, maintainAspectRatio: false, scales: { r: { angleLines: { color: 'rgba(255, 255, 255, 0.1)' }, grid: { color: 'rgba(255, 255, 255, 0.1)' }, pointLabels: { color: '#9aa0a6' }, ticks: { display: false } } } }
         });
-        
-        // 威胁分布图表
+
+        // 3. 威胁分布 (现在会随访客数据动态变化)
         const threatCtx = document.getElementById('threatDistributionChart').getContext('2d');
         const threatDistributionChart = new Chart(threatCtx, {
             type: 'doughnut',
             data: {
-                labels: ['已防护', '低风险', '中风险', '高风险'],
+                labels: ['已防护', '广告追踪', '恶意扫描', '高危威胁'],
                 datasets: [{
                     data: [75, 15, 8, 2],
-                    backgroundColor: [
-                        'rgba(52, 168, 83, 0.7)',
-                        'rgba(26, 115, 232, 0.7)',
-                        'rgba(251, 188, 5, 0.7)',
-                        'rgba(234, 67, 53, 0.7)'
-                    ],
-                    borderColor: [
-                        'rgba(52, 168, 83, 1)',
-                        'rgba(26, 115, 232, 1)',
-                        'rgba(251, 188, 5, 1)',
-                        'rgba(234, 67, 53, 1)'
-                    ],
-                    borderWidth: 1
+                    backgroundColor: ['rgba(52, 168, 83, 0.7)', 'rgba(26, 115, 232, 0.7)', 'rgba(251, 188, 5, 0.7)', 'rgba(234, 67, 53, 0.7)'],
+                    borderWidth: 0
                 }]
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            color: '#9aa0a6',
-                            padding: 15
-                        }
-                    }
-                }
-            }
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { color: '#9aa0a6', boxWidth: 10 } } } }
         });
-        
-        // 流量分布图表
+
+        // 4. 流量分布 (现在会随访客数据动态变化)
         const trafficCtx = document.getElementById('trafficDistributionChart').getContext('2d');
         const trafficDistributionChart = new Chart(trafficCtx, {
             type: 'pie',
             data: {
-                labels: ['国内流量', '代理流量', '直连流量', '阻断流量'],
+                labels: ['国内直连', '代理流量', '内网流量', '已阻断'],
                 datasets: [{
                     data: [45, 35, 18, 2],
-                    backgroundColor: [
-                        'rgba(26, 115, 232, 0.7)',
-                        'rgba(52, 168, 83, 0.7)',
-                        'rgba(251, 188, 5, 0.7)',
-                        'rgba(234, 67, 53, 0.7)'
-                    ],
-                    borderColor: [
-                        'rgba(26, 115, 232, 1)',
-                        'rgba(52, 168, 83, 1)',
-                        'rgba(251, 188, 5, 1)',
-                        'rgba(234, 67, 53, 1)'
-                    ],
-                    borderWidth: 1
+                    backgroundColor: ['rgba(26, 115, 232, 0.7)', 'rgba(52, 168, 83, 0.7)', 'rgba(251, 188, 5, 0.7)', 'rgba(234, 67, 53, 0.7)'],
+                    borderWidth: 0
                 }]
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            color: '#9aa0a6',
-                            padding: 15
-                        }
-                    }
-                }
-            }
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { color: '#9aa0a6', boxWidth: 10 } } } }
         });
-        
-        // DNS延迟模拟
+
+        // 5. 延迟趋势图
+        const trendCtx = document.getElementById('latencyTrendChart').getContext('2d');
+        const latencyTrendChart = new Chart(trendCtx, {
+            type: 'line',
+            data: {
+                labels: ['-5m', '-4m', '-3m', '-2m', '-1m', '当前'],
+                datasets: [{
+                    label: '平均响应时间',
+                    data: [45, 38, 42, 35, 32, 28],
+                    borderColor: 'rgba(138, 180, 248, 1)',
+                    backgroundColor: 'rgba(138, 180, 248, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, scales: { y: { grid: { color: 'rgba(255,255,255,0.1)' } }, x: { display: false } }, plugins: { legend: { display: false } } }
+        });
+
+        // ==========================================
+        //  模拟逻辑 (DNS部分保持不动，其他部分增强)
+        // ==========================================
+
+        // 启动访客追踪系统
+        visitorSystem.init();
+
+        // DNS延迟模拟 (原封不动)
         let isMonitoring = true;
         let timeCounter = 0;
-        const maxDataPoints = 20;
-        
-        // 初始延迟值
-        let googleLatency = 58;
-        let aliLatency = 32;
-        let fakeipLatency = 12;
-        
-        // 更新延迟显示
-        function updateLatencyDisplay() {
-            document.getElementById('google-latency').textContent = googleLatency + 'ms';
-            document.getElementById('ali-latency').textContent = aliLatency + 'ms';
-            document.getElementById('fakeip-latency').textContent = fakeipLatency + 'ms';
-        }
-        
-        // 模拟DNS延迟变化
+        let googleLatency = 58, aliLatency = 32, fakeipLatency = 12;
+
         function simulateDNSLatency() {
             if (!isMonitoring) return;
-            
             timeCounter++;
-            
-            // 生成随机变化
             const googleChange = Math.floor(Math.random() * 10) - 4;
             const aliChange = Math.floor(Math.random() * 8) - 3;
             const fakeipChange = Math.floor(Math.random() * 6) - 2;
             
-            // 更新延迟值（确保在合理范围内）
             googleLatency = Math.max(10, Math.min(150, googleLatency + googleChange));
             aliLatency = Math.max(5, Math.min(100, aliLatency + aliChange));
             fakeipLatency = Math.max(2, Math.min(50, fakeipLatency + fakeipChange));
             
-            // 更新趋势指示器
-            document.getElementById('google-trend').className = googleChange >= 0 ? 'latency-trend trend-up' : 'latency-trend trend-down';
-            document.getElementById('google-trend').innerHTML = googleChange >= 0 ? '<i class="fas fa-arrow-up"></i>' : '<i class="fas fa-arrow-down"></i>';
+            // 更新DOM
+            document.getElementById('google-latency').textContent = googleLatency + 'ms';
+            document.getElementById('ali-latency').textContent = aliLatency + 'ms';
+            document.getElementById('fakeip-latency').textContent = fakeipLatency + 'ms';
             
-            document.getElementById('ali-trend').className = aliChange >= 0 ? 'latency-trend trend-up' : 'latency-trend trend-down';
-            document.getElementById('ali-trend').innerHTML = aliChange >= 0 ? '<i class="fas fa-arrow-up"></i>' : '<i class="fas fa-arrow-down"></i>';
-            
-            document.getElementById('fakeip-trend').className = fakeipChange >= 0 ? 'latency-trend trend-up' : 'latency-trend trend-down';
-            document.getElementById('fakeip-trend').innerHTML = fakeipChange >= 0 ? '<i class="fas fa-arrow-up"></i>' : '<i class="fas fa-arrow-down"></i>';
-            
-            // 更新显示
-            updateLatencyDisplay();
-            
-            // 更新图表数据
-            if (dnsData.labels.length >= maxDataPoints) {
+            // 更新图表
+            if (dnsData.labels.length >= 20) {
                 dnsData.labels.shift();
-                dnsData.datasets[0].data.shift();
-                dnsData.datasets[1].data.shift();
-                dnsData.datasets[2].data.shift();
+                dnsData.datasets.forEach(d => d.data.shift());
             }
-            
             dnsData.labels.push(timeCounter + 's');
             dnsData.datasets[0].data.push(googleLatency);
             dnsData.datasets[1].data.push(aliLatency);
             dnsData.datasets[2].data.push(fakeipLatency);
-            
             dnsLatencyChart.update();
         }
-        
+
+        setInterval(simulateDNSLatency, 2000); // 保持原有的DNS更新频率
+
+        // 模拟节点性能和延迟趋势的轻微波动
+        setInterval(() => {
+            // 节点性能波动
+            nodePerformanceChart.data.datasets.forEach(ds => {
+                ds.data = ds.data.map(v => Math.max(60, Math.min(100, v + Math.floor(Math.random() * 10) - 5)));
+            });
+            nodePerformanceChart.update();
+
+            // 延迟趋势波动
+            latencyTrendChart.data.datasets[0].data.push(Math.floor(Math.random() * 20) + 20);
+            if(latencyTrendChart.data.datasets[0].data.length > 6) latencyTrendChart.data.datasets[0].data.shift();
+            latencyTrendChart.update();
+        }, 3000);
+
         // 控制按钮事件
         document.getElementById('pause-resume-btn').addEventListener('click', function() {
             isMonitoring = !isMonitoring;
             this.innerHTML = isMonitoring ? '<i class="fas fa-pause"></i> 暂停' : '<i class="fas fa-play"></i> 继续';
         });
-        
         document.getElementById('reset-btn').addEventListener('click', function() {
             dnsData.labels = [];
-            dnsData.datasets[0].data = [];
-            dnsData.datasets[1].data = [];
-            dnsData.datasets[2].data = [];
+            dnsData.datasets.forEach(d => d.data = []);
             timeCounter = 0;
             dnsLatencyChart.update();
         });
-        
-        // 开始模拟
-        setInterval(simulateDNSLatency, 2000);
-        
-        // 初始显示
-        updateLatencyDisplay();
-        
-        // 模拟其他数据更新
-        setInterval(() => {
-            // 模拟节点性能变化
-            nodePerformanceChart.data.datasets[0].data = [
-                Math.floor(Math.random() * 10) + 80,
-                Math.floor(Math.random() * 10) + 85,
-                Math.floor(Math.random() * 10) + 75,
-                Math.floor(Math.random() * 10) + 70,
-                Math.floor(Math.random() * 5) + 90
-            ];
-            nodePerformanceChart.data.datasets[1].data = [
-                Math.floor(Math.random() * 10) + 70,
-                Math.floor(Math.random() * 10) + 80,
-                Math.floor(Math.random() * 10) + 85,
-                Math.floor(Math.random() * 10) + 75,
-                Math.floor(Math.random() * 5) + 85
-            ];
-            nodePerformanceChart.update();
-        }, 5000);
+
     </script>
 </body>
 </html>
