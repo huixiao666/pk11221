@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sing-box 配置文件对比分析</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #0f1419;
+            color: #e0e0e0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #1a2332, #0d1219);
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #4dabf7;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: #1a2332;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #74c0fc;
+            border-bottom: 1px solid #2d3748;
+            padding-bottom: 10px;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        
+        .summary {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        
+        .summary-card {
+            background: linear-gradient(135deg, #1e293b, #334155);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .summary-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #a5d8ff;
+        }
+        
+        .summary-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+        
+        .best {
+            color: #51cf66;
+        }
+        
+        .good {
+            color: #ffd43b;
+        }
+        
+        .average {
+            color: #ff922b;
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 0 10px;
+        }
+        
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            margin-right: 5px;
+            border-radius: 3px;
+        }
+        
+        .airport {
+            background-color: #4dabf7;
+        }
+        
+        .vpn {
+            background-color: #ff922b;
+        }
+        
+        .pika {
+            background-color: #51cf66;
+        }
+        
+        .details {
+            margin-top: 30px;
+        }
+        
+        .detail-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        .detail-table th, .detail-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #2d3748;
+        }
+        
+        .detail-table th {
+            background-color: #1e293b;
+            color: #a5d8ff;
+        }
+        
+        .detail-table tr:hover {
+            background-color: #1e293b;
+        }
+        
+        .score {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        .score-high {
+            background-color: #2b8a3e;
+            color: white;
+        }
+        
+        .score-medium {
+            background-color: #e67700;
+            color: white;
+        }
+        
+        .score-low {
+            background-color: #c92a2a;
+            color: white;
+        }
+        
+        @media (max-width: 1024px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .summary {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Sing-box 配置文件对比分析</h1>
+            <p>全面评估三个不同配置文件的IP安全、DNS隐私、性能表现等方面的差异</p>
+        </div>
+        
+        <div class="dashboard">
+            <div class="card">
+                <h2 class="card-title">IP安全与隐私保护</h2>
+                <div class="chart-container">
+                    <canvas id="ipSecurityChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2 class="card-title">DNS安全与解析性能</h2>
+                <div class="chart-container">
+                    <canvas id="dnsSecurityChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2 class="card-title">规则集与分流能力</h2>
+                <div class="chart-container">
+                    <canvas id="routingChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2 class="card-title">性能与优化指标</h2>
+                <div class="chart-container">
+                    <canvas id="performanceChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="summary">
+                <div class="summary-card">
+                    <h3 class="summary-title">功能最全面</h3>
+                    <div class="summary-value best">皮卡专属节点</div>
+                    <p>DNS服务器数量最多，规则集最丰富，安全特性最全面</p>
+                </div>
+                
+                <div class="summary-card">
+                    <h3 class="summary-title">性能最均衡</h3>
+                    <div class="summary-value good">某某机场</div>
+                    <p>配置简洁，规则清晰，性能表现稳定</p>
+                </div>
+                
+                <div class="summary-card">
+                    <h3 class="summary-title">功能最基础</h3>
+                    <div class="summary-value average">某某VPN</div>
+                    <p>配置相对简单，功能特性较少，适合基础使用</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color airport"></div>
+                <span>某某机场</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color vpn"></div>
+                <span>某某VPN</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color pika"></div>
+                <span>皮卡专属节点</span>
+            </div>
+        </div>
+        
+        <div class="details card">
+            <h2 class="card-title">详细对比分析</h2>
+            <table class="detail-table">
+                <thead>
+                    <tr>
+                        <th>功能类别</th>
+                        <th>某某机场</th>
+                        <th>某某VPN</th>
+                        <th>皮卡专属节点</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>DNS服务器数量</td>
+                        <td><span class="score score-low">3个</span></td>
+                        <td><span class="score score-medium">6个</span></td>
+                        <td><span class="score score-high">8个</span></td>
+                    </tr>
+                    <tr>
+                        <td>DNS规则数量</td>
+                        <td><span class="score score-medium">5条</span></td>
+                        <td><span class="score score-low">4条</span></td>
+                        <td><span class="score score-high">10条</span></td>
+                    </tr>
+                    <tr>
+                        <td>路由规则数量</td>
+                        <td><span class="score score-high">16条</span></td>
+                        <td><span class="score score-low">15条</span></td>
+                        <td><span class="score score-high">29条</span></td>
+                    </tr>
+                    <tr>
+                        <td>规则集数量</td>
+                        <td><span class="score score-medium">16个</span></td>
+                        <td><span class="score score-low">10个</span></td>
+                        <td><span class="score score-high">30个</span></td>
+                    </tr>
+                    <tr>
+                        <td>出站代理选项</td>
+                        <td><span class="score score-high">丰富</span></td>
+                        <td><span class="score score-medium">中等</span></td>
+                        <td><span class="score score-high">丰富</span></td>
+                    </tr>
+                    <tr>
+                        <td>防DNS泄露</td>
+                        <td><span class="score score-medium">中等</span></td>
+                        <td><span class="score score-medium">中等</span></td>
+                        <td><span class="score score-high">强</span></td>
+                    </tr>
+                    <tr>
+                        <td>防IP泄露</td>
+                        <td><span class="score score-medium">中等</span></td>
+                        <td><span class="score score-medium">中等</span></td>
+                        <td><span class="score score-high">强</span></td>
+                    </tr>
+                    <tr>
+                        <td>广告拦截</td>
+                        <td><span class="score score-medium">基础</span></td>
+                        <td><span class="score score-medium">基础</span></td>
+                        <td><span class="score score-high">增强</span></td>
+                    </tr>
+                    <tr>
+                        <td>协议安全性</td>
+                        <td><span class="score score-medium">中等</span></td>
+                        <td><span class="score score-high">高</span></td>
+                        <td><span class="score score-high">高</span></td>
+                    </tr>
+                    <tr>
+                        <td>性能影响</td>
+                        <td><span class="score score-high">低</span></td>
+                        <td><span class="score score-high">低</span></td>
+                        <td><span class="score score-medium">中等</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // IP安全与隐私保护图表
+        const ipSecurityCtx = document.getElementById('ipSecurityChart').getContext('2d');
+        const ipSecurityChart = new Chart(ipSecurityCtx, {
+            type: 'bar',
+            data: {
+                labels: ['IP泄露防护', 'IP扫描防护', '防火墙规避', 'IP隐私安全', 'IP污染防护'],
+                datasets: [
+                    {
+                        label: '某某机场',
+                        data: [70, 65, 60, 70, 65],
+                        backgroundColor: '#4dabf7',
+                        borderColor: '#4dabf7',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '某某VPN',
+                        data: [65, 60, 65, 65, 60],
+                        backgroundColor: '#ff922b',
+                        borderColor: '#ff922b',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '皮卡专属节点',
+                        data: [85, 80, 85, 90, 85],
+                        backgroundColor: '#51cf66',
+                        borderColor: '#51cf66',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        title: {
+                            display: true,
+                            text: '防护强度(%)'
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'IP安全与隐私保护能力对比'
+                    },
+                    legend: {
+                        position: 'top',
+                    }
+                }
+            }
+        });
+
+        // DNS安全与解析性能图表
+        const dnsSecurityCtx = document.getElementById('dnsSecurityChart').getContext('2d');
+        const dnsSecurityChart = new Chart(dnsSecurityCtx, {
+            type: 'bar',
+            data: {
+                labels: ['DNS泄露防护', '防火墙规避', 'DNS污染防护', '隐私安全', '解析速度'],
+                datasets: [
+                    {
+                        label: '某某机场',
+                        data: [70, 65, 70, 75, 80],
+                        backgroundColor: '#4dabf7',
+                        borderColor: '#4dabf7',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '某某VPN',
+                        data: [75, 70, 75, 80, 85],
+                        backgroundColor: '#ff922b',
+                        borderColor: '#ff922b',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '皮卡专属节点',
+                        data: [90, 85, 90, 95, 75],
+                        backgroundColor: '#51cf66',
+                        borderColor: '#51cf66',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        title: {
+                            display: true,
+                            text: '性能评分(%)'
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'DNS安全与解析性能对比'
+                    },
+                    legend: {
+                        position: 'top',
+                    }
+                }
+            }
+        });
+
+        // 规则集与分流能力图表
+        const routingCtx = document.getElementById('routingChart').getContext('2d');
+        const routingChart = new Chart(routingCtx, {
+            type: 'bar',
+            data: {
+                labels: ['规则集数量', '分流精细度', '防火墙规避', '规则集安全', '地址稳定性'],
+                datasets: [
+                    {
+                        label: '某某机场',
+                        data: [70, 75, 70, 75, 80],
+                        backgroundColor: '#4dabf7',
+                        borderColor: '#4dabf7',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '某某VPN',
+                        data: [50, 60, 65, 70, 75],
+                        backgroundColor: '#ff922b',
+                        borderColor: '#ff922b',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '皮卡专属节点',
+                        data: [95, 90, 85, 90, 85],
+                        backgroundColor: '#51cf66',
+                        borderColor: '#51cf66',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        title: {
+                            display: true,
+                            text: '能力评分(%)'
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '规则集与分流能力对比'
+                    },
+                    legend: {
+                        position: 'top',
+                    }
+                }
+            }
+        });
+
+        // 性能与优化指标图表
+        const performanceCtx = document.getElementById('performanceChart').getContext('2d');
+        const performanceChart = new Chart(performanceCtx, {
+            type: 'bar',
+            data: {
+                labels: ['连接速度', '资源占用', '广告拦截', '协议优化', '总体稳定性'],
+                datasets: [
+                    {
+                        label: '某某机场',
+                        data: [85, 90, 70, 80, 85],
+                        backgroundColor: '#4dabf7',
+                        borderColor: '#4dabf7',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '某某VPN',
+                        data: [80, 85, 70, 85, 80],
+                        backgroundColor: '#ff922b',
+                        borderColor: '#ff922b',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '皮卡专属节点',
+                        data: [75, 70, 90, 75, 80],
+                        backgroundColor: '#51cf66',
+                        borderColor: '#51cf66',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        title: {
+                            display: true,
+                            text: '性能评分(%)'
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '性能与优化指标对比'
+                    },
+                    legend: {
+                        position: 'top',
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
